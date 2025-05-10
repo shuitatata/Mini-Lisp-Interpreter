@@ -57,11 +57,10 @@ ValuePtr Parser::parseTails() {
     if (tokens.front()->getType() == TokenType::DOT) {  // 点右侧为右值
         tokens.pop_front();
         auto cdr = this->parse();
-        try {
-            tokens.front()->getType();
-        } catch (...) {
+        if (tokens.empty()) {
             throw SyntaxError("EOF");
         }
+        tokens.front()->getType();
         if (tokens.front()->getType() == TokenType::RIGHT_PAREN) {
             tokens.pop_front();
             return std::make_shared<PairValue>(car, cdr);
